@@ -1,4 +1,4 @@
-package club.maxstats.weavetabstats
+package club.maxstats.seraph
 
 import club.maxstats.weave.loader.api.ModInitializer
 

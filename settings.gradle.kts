@@ -1,4 +1,4 @@
-rootProject.name = "WeaveTabStats"
+rootProject.name = "Seraph"
 
 pluginManagement {
     repositories {

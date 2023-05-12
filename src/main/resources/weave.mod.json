@@ -1,9 +1,9 @@
 {
   "mixinConfigs": [
-    "weavetabstats.mixins.json"
+    "seraph.mixins.json"
   ],
   "entrypoints": [
-    "club.maxstats.weavetabstats.Main"
+    "club.maxstats.seraph.Main"
   ],
   "hooks": [
   ]

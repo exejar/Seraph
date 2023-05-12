@@ -4,7 +4,7 @@ plugins {
     application
 }
 
-group = "club.maxstats.weavetabstats"
+group = "club.maxstats.seraph"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -23,5 +23,5 @@ minecraft.version("1.8.9")
 
 tasks.jar {
     destinationDirectory.set(file("${System.getProperty("user.home")}/.lunarclient/mods"))
-    archiveBaseName.set("WeaveTabStats")
+    archiveBaseName.set("Seraph")
 }
