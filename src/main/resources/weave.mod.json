@@ -1,0 +1,10 @@
+{
+  "mixinConfigs": [
+    "weavetabstats.mixins.json"
+  ],
+  "entrypoints": [
+    "club.maxstats.weavetabstats.Main"
+  ],
+  "hooks": [
+  ]
+}

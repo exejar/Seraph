@@ -1,0 +1,6 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "club.maxstats.weavetabstats.mixins",
+  "mixins": [
+  ]
+}
