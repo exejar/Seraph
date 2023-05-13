@@ -7,8 +7,6 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 
 @Serializable
 data class LocrawInfo(
@@ -37,10 +35,6 @@ object GameTypeSerializer : KSerializer<GameType> {
     }
 }
 
-val locrawJson = Json { ignoreUnknownKeys = true }
-fun deserializeLocraw(json: String) {
-    locrawInfo = locrawJson.decodeFromString<LocrawInfo>(json)
-}
 var locrawInfo: LocrawInfo = LocrawInfo("", GameType.UNKNOWN, "", "", "")
 
 /**
