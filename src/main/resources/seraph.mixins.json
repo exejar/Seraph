@@ -2,6 +2,7 @@
   "compatibilityLevel": "JAVA_8",
   "package": "club.maxstats.seraph.mixins",
   "mixins": [
-    "LocrawMixin"
+    "NetHandlerPlayClientMixin",
+    "GuiIngameMixin"
   ]
 }

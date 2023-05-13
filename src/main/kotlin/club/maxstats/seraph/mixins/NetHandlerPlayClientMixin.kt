@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 
 @Mixin(NetHandlerPlayClient::class)
-class LocrawMixin {
+class NetHandlerPlayClientMixin {
     @Inject(method = ["handleChat"], at = [At("HEAD")])
     fun handleChatInject(chat: S02PacketChat, ci: CallbackInfo) {
         if (chat.chatComponent.unformattedText.startsWith("{\"server\":"))
