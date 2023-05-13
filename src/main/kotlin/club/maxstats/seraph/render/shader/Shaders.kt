@@ -1,5 +1,10 @@
 package club.maxstats.seraph.render.shader
 
+import club.maxstats.seraph.render.Color
+import club.maxstats.seraph.render.drawQuad
+import club.maxstats.seraph.util.calculateScaleFactor
+import net.minecraft.client.Minecraft
+import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL20
 
 class RoundedRectProgram : ShaderProgram() {
@@ -9,5 +14,38 @@ class RoundedRectProgram : ShaderProgram() {
 
     override fun register() {
         registerShader("assets/shaders/roundedrect.fsh", GL20.GL_FRAGMENT_SHADER)
+    }
+
+    fun render(
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
+        topLeftRadius: Float,
+        topRightRadius: Float,
+        bottomLeftRadius: Float,
+        bottomRightRadius: Float,
+        color: Color
+    ) {
+        val scale = calculateScaleFactor(Minecraft.getMinecraft())
+        this.color.color = color
+        location.x = x * scale
+        location.y = Display.getHeight() - (y + height) * scale
+
+        var scaledWidth = width
+        var scaledHeight = height
+        if (scale == 1) {
+            scaledWidth /= 2
+            scaledHeight /= 2
+        }
+
+        radius.x = topRightRadius
+        radius.y = bottomRightRadius
+        radius.z = topLeftRadius
+        radius.w = bottomLeftRadius
+
+        begin(scaledWidth, scaledHeight)
+        drawQuad(x - 5, y - 5, width + 10, height + 10)
+        end()
     }
 }
