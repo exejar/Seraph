@@ -1,5 +1,8 @@
 package club.maxstats.seraph.util
 
+import ApiKeyThrottleException
+import HypixelAPIException
+import PlayerNotFoundException
 import club.maxstats.seraph.Main
 import getPlayerFromUUID
 import kotlinx.serialization.decodeFromString
@@ -41,8 +44,18 @@ fun calculateScaleFactor(mc: Minecraft): Int {
 
     return scaleFactor
 }
-suspend fun UUID.getPlayerData() : Player {
+private var keyThrottleStart: Long = now()
+suspend fun UUID.getPlayerData() : Player? {
     return playerCache.get(this)
-        ?: getPlayerFromUUID(this.toString(), apiKey).also { playerCache.put(this, it) }
+        ?: try {
+            if (now() - keyThrottleStart >= 70 * 1000)
+                getPlayerFromUUID(this.toString(), apiKey).also { playerCache.put(this, it) }
+            else
+                return null
+        } catch (ex: HypixelAPIException) {
+            if (ex is ApiKeyThrottleException)
+                keyThrottleStart = now()
+            return null
+        }
 }
 var apiKey : String = ""
