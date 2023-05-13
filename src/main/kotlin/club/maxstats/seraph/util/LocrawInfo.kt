@@ -20,6 +20,9 @@ data class LocrawInfo(
     @SerialName("mode") val mode: String = "",
     @SerialName("map") val map: String = ""
 ) {
+    fun inGame() : Boolean {
+        return mode.isNotEmpty()
+    }
     override fun toString() : String {
         return "Server: $server, Game Type: ${gameType}, Lobby Name: $lobbyName, Mode: $mode, Map: $map"
     }
