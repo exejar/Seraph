@@ -7,11 +7,12 @@ import kotlinx.serialization.json.Json
 import net.minecraft.client.Minecraft
 import player.Player
 import java.io.InputStream
+import java.time.Duration
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.HashMap
-
+private val playerCache = SimpleCache<UUID, Player>(500, Duration.ofMinutes(5))
 private val safeJson = Json { ignoreUnknownKeys = true }
-private val playerCache = HashMap<UUID, Player>()
 fun String.asResource() : InputStream = Main::class.java.classLoader.getResourceAsStream(this)
     ?: throw IllegalStateException("Failed to fetch resource $this")
 fun now() = System.currentTimeMillis()
@@ -35,7 +36,6 @@ fun calculateScaleFactor(mc: Minecraft): Int {
     return scaleFactor
 }
 suspend fun UUID.getPlayerData() : Player {
-    return playerCache.getOrPut(this) {
-        getPlayerFromUUID(this.toString(), "")
-    }
+    return playerCache.get(this)
+        ?: getPlayerFromUUID(this.toString(), "").also { playerCache.put(this, it) }
 }
