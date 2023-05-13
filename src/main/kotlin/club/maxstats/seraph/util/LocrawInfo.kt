@@ -10,16 +10,20 @@ import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 data class LocrawInfo(
-    @SerializedName("server") val server: String = "",
+    @SerialName("server") val server: String = "",
+    @SerialName("gametype") val gameType: GameType = GameType.UNKNOWN,
 
     /* Present when you're in a lobby */
-    @SerializedName("gametype") val gameType: GameType = GameType.UNKNOWN,
-    @SerializedName("lobbyname") val lobbyName: String = "",
+    @SerialName("lobbyname") val lobbyName: String = "",
 
     /* Present when you're in a game */
-    @SerializedName("mode") val mode: String = "",
-    @SerializedName("map") val map: String = ""
-)
+    @SerialName("mode") val mode: String = "",
+    @SerialName("map") val map: String = ""
+) {
+    override fun toString() : String {
+        return "Server: $server, Game Type: ${gameType}, Lobby Name: $lobbyName, Mode: $mode, Map: $map"
+    }
+}
 @OptIn(ExperimentalSerializationApi::class)
 @Serializer(forClass = GameType::class)
 object GameTypeSerializer : KSerializer<GameType> {
@@ -35,7 +39,7 @@ object GameTypeSerializer : KSerializer<GameType> {
     }
 }
 
-var locrawInfo: LocrawInfo = LocrawInfo("", GameType.UNKNOWN, "", "", "")
+var locrawInfo: LocrawInfo = LocrawInfo()
 
 /**
  * @author Scherso ([...](https://github.com/scherso/))
