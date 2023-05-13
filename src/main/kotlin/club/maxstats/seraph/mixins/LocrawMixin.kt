@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 class LocrawMixin {
     @Inject(method = ["handleChat"], at = [At("HEAD")])
     fun handleChatInject(chat: S02PacketChat, ci: CallbackInfo) {
-        if (chat.chatComponent.formattedText.startsWith("{\"server\":"))
-            chat.chatComponent.formattedText.deserializeLocraw()
+        if (chat.chatComponent.unformattedText.startsWith("{\"server\":"))
+            chat.chatComponent.unformattedText.deserializeLocraw()
     }
 }
