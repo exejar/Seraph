@@ -37,10 +37,7 @@ object GameTypeSerializer : KSerializer<GameType> {
     }
 }
 
-val locrawJson = Json {
-    serializersModule = SerializersModule { contextual(GameType::class, GameTypeSerializer) }
-    ignoreUnknownKeys = true
-}
+val locrawJson = Json { ignoreUnknownKeys = true }
 fun deserializeLocraw(json: String) {
     locrawInfo = locrawJson.decodeFromString<LocrawInfo>(json)
 }
@@ -49,6 +46,7 @@ var locrawInfo: LocrawInfo = LocrawInfo("", GameType.UNKNOWN, "", "", "")
 /**
  * @author Scherso ([...](https://github.com/scherso/))
  */
+@Serializable(with = GameTypeSerializer::class)
 enum class GameType(val gameType: String) {
     ARCADE_GAMES   ("ARCADE"),
     BEDWARS        ("BEDWARS"),
