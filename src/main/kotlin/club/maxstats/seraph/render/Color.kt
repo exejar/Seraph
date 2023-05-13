@@ -13,6 +13,8 @@ data class Color(
             alpha.toString(16).padStart(2, '0')
 
     fun toRGBA() = (alpha shl 24) or (red shl 16) or (green shl 8) or blue
-}
 
-val white = Color(255, 255, 255, 255)
+    companion object {
+        val white = Color(255, 255, 255, 255)
+    }
+}
