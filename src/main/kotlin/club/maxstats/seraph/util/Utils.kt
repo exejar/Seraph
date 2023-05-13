@@ -13,13 +13,19 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.HashMap
 private val playerCache = SimpleCache<UUID, Player>(500, Duration.ofMinutes(5))
 private val safeJson = Json { ignoreUnknownKeys = true }
-fun String.asResource() : InputStream = Main::class.java.classLoader.getResourceAsStream(this)
+fun String.asResource(): InputStream = Main::class.java.classLoader.getResourceAsStream(this)
     ?: throw IllegalStateException("Failed to fetch resource $this")
 fun now() = System.currentTimeMillis()
 fun InputStream.readToString() = this.readBytes().toString(Charsets.UTF_8)
 fun String.deserializeLocraw() {
     locrawInfo = safeJson.decodeFromString<LocrawInfo>(this)
 }
+val mc = Minecraft.getMinecraft()
+val isOnHypixel: Boolean
+        get() =
+            if (mc.theWorld != null && !mc.isSingleplayer)
+                mc.currentServerData.serverIP.lowercase(Locale.getDefault()).contains("hypixel")
+            else false
 fun calculateScaleFactor(mc: Minecraft): Int {
     val displayWidth = mc.displayWidth
     val displayHeight = mc.displayHeight
@@ -37,5 +43,6 @@ fun calculateScaleFactor(mc: Minecraft): Int {
 }
 suspend fun UUID.getPlayerData() : Player {
     return playerCache.get(this)
-        ?: getPlayerFromUUID(this.toString(), "").also { playerCache.put(this, it) }
+        ?: getPlayerFromUUID(this.toString(), apiKey).also { playerCache.put(this, it) }
 }
+var apiKey : String = ""
