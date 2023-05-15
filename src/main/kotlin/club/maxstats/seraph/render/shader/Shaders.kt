@@ -3,6 +3,7 @@ package club.maxstats.seraph.render.shader
 import club.maxstats.seraph.render.Color
 import club.maxstats.seraph.render.drawQuad
 import club.maxstats.seraph.util.calculateScaleFactor
+import club.maxstats.seraph.util.mc
 import net.minecraft.client.Minecraft
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL20
@@ -27,7 +28,9 @@ class RoundedRectProgram : ShaderProgram() {
         bottomRightRadius: Float,
         color: Color
     ) {
-        val scale = calculateScaleFactor(Minecraft.getMinecraft())
+        begin()
+
+        val scale = calculateScaleFactor(mc)
         this.color.color = color
         location.x = x * scale
         location.y = Display.getHeight() - (y + height) * scale
@@ -44,8 +47,8 @@ class RoundedRectProgram : ShaderProgram() {
         radius.z = topLeftRadius
         radius.w = bottomLeftRadius
 
-        begin(scaledWidth, scaledHeight)
-        drawQuad(x - 5, y - 5, width + 10, height + 10)
+        applyUniforms(scaledWidth, scaledHeight)
+        drawQuad(x - 5, y - 5, x + width + 10, y + height + 10)
         end()
     }
 }
