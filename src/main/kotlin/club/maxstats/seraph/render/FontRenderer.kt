@@ -226,7 +226,7 @@ class FontRenderer(
             currentColor.red / multiplier,
             currentColor.green / multiplier,
             currentColor.blue / multiplier,
-            currentColor.alpha / multiplier
+            (color ushr 24 and 0xff) / multiplier
         )
 
         var currentFont = font
