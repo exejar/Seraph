@@ -22,10 +22,11 @@ abstract class ShaderProgram(
     protected val genesis = now()
     protected val resolution = Uniform2f("u_resolution")
     protected val time = Uniform1f("u_time")
-    open fun begin(width: Float, height: Float) {
+    open fun begin() {
         active = true
         glUseProgram(program)
-
+    }
+    open fun applyUniforms(width: Float, height: Float) {
         resolution.x = width
         resolution.y = height
 
@@ -39,7 +40,8 @@ abstract class ShaderProgram(
         glUseProgram(0)
     }
     open fun render(width: Float, height: Float) {
-        begin(width, height)
+        begin()
+        applyUniforms(width, height)
         end()
     }
 
