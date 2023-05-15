@@ -158,7 +158,7 @@ class FontRenderer(
             height += lineHeight + lineSpacing
         }
 
-        return Pair(longest, height)
+        return longest to height
     }
 
     fun drawCenteredWrappedString(
@@ -184,6 +184,8 @@ class FontRenderer(
             val lineWidth = getWidth(lines[i], font).toDouble()
             val lineHeight = getHeight(lines[i], font).toDouble()
 
+            println(lineHeight)
+//            println((i * (lineHeight + lineSpacing)))
             drawString(lines[i], x + width / 2 - lineWidth / 2, y + (i * (lineHeight + lineSpacing)).toFloat(), color, style)
 
             if (lineWidth > longest)
@@ -192,7 +194,7 @@ class FontRenderer(
             height += lineHeight + lineSpacing
         }
 
-        return Pair(longest, height)
+        return longest to height
     }
 
     private fun renderString(
@@ -314,14 +316,14 @@ class FontRenderer(
         GL11.glVertex2f(x + charData.width, y);
         GL11.glEnd();
     }
-    fun getWidth(text: String, font: GLFont = plainFont) = this.getFontBounds(text, font).first
-    fun getHeight(text: String, font: GLFont = plainFont) = this.getFontBounds(text, font).second
+    fun getWidth(text: String, font: GLFont = plainFont) = this.getBounds(text, font).first + 2f
+    fun getHeight(text: String, font: GLFont = plainFont) = this.getBounds(text, font).second / 2f - 2f
 
     /**
      * Gets the bounds of the given text. Takes account of Minecraft's chat formatting
      * @return Pair<width, height>
      */
-    private fun getFontBounds(text: String, font: GLFont): Pair<Float, Float> {
+    private fun getBounds(text: String, font: GLFont): Pair<Float, Float> {
         var height = 0f
         var width = 0f
         var bold = false
@@ -421,7 +423,7 @@ class GLFont(
             val width = bounds.width.toFloat() + 8.0f
             val height = bounds.height.toFloat()
 
-            val image = BufferedImage(Math.ceil(width.toDouble()).toInt(), Math.ceil(height.toDouble()).toInt(), BufferedImage.TYPE_INT_ARGB)
+            val image = BufferedImage(ceil(width.toDouble()).toInt(), ceil(height.toDouble()).toInt(), BufferedImage.TYPE_INT_ARGB)
             val g2d = image.createGraphics()
 
             g2d.font = plainFont
