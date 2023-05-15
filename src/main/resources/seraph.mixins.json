@@ -3,6 +3,7 @@
   "package": "club.maxstats.seraph.mixins",
   "mixins": [
     "NetHandlerPlayClientMixin",
-    "GuiIngameMixin"
+    "GuiIngameMixin",
+    "EntityRendererMixin"
   ]
 }
