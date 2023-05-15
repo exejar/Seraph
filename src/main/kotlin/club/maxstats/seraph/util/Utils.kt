@@ -47,12 +47,13 @@ fun calculateScaleFactor(mc: Minecraft): Int {
 
     return scaleFactor
 }
-private var keyThrottleStart: Long = now()
-suspend fun UUID.getPlayerData() : Player? {
-    return playerCache.get(this)
+private var keyThrottleStart: Long = 0L
+suspend fun getPlayerData(uuid: UUID) : Player? {
+    println("$hypixelApiKey API KEY")
+    return playerCache.get(uuid)
         ?: try {
             if (now() - keyThrottleStart >= 70 * 1000)
-                getPlayerFromUUID(this.toString(), hypixelApiKey).also { playerCache.put(this, it) }
+                getPlayerFromUUID(uuid.toString(), hypixelApiKey).also { playerCache.put(uuid, it) }
             else
                 return null
         } catch (ex: HypixelAPIException) {
