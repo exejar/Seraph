@@ -1,5 +1,6 @@
 package club.maxstats.seraph
 
+import club.maxstats.seraph.render.AlertRender
 import club.maxstats.seraph.render.FontManager
 import club.maxstats.seraph.render.Position
 import club.maxstats.seraph.render.none
@@ -12,9 +13,6 @@ import club.maxstats.weave.loader.api.event.SubscribeEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import net.minecraft.client.Minecraft
 import net.minecraft.util.ChatComponentText
 import java.io.File
@@ -26,6 +24,7 @@ class Main : ModInitializer {
         fontManager = FontManager()
         EventBus.subscribe(this)
         EventBus.subscribe(ApiKey())
+        EventBus.subscribe(AlertRender())
     }
 
     @SubscribeEvent
