@@ -17,7 +17,7 @@ Seraph was a passion project I started in 2019, and since then have stopped deve
 2. Download the latest release of Seraph from the GitHub releases page
 3. Place the mod jar in the Weave mod folder
 4. Launch any Minecraft client with Weave and login to Hypixel
-5. Type /api new in the Hypixel Chat
+5. Type **'/api new'** in the Hypixel Chat
 
 
 ### Usage
