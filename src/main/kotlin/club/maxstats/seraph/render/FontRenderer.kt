@@ -184,8 +184,6 @@ class FontRenderer(
             val lineWidth = getWidth(lines[i], font).toDouble()
             val lineHeight = getHeight(lines[i], font).toDouble()
 
-            println(lineHeight)
-//            println((i * (lineHeight + lineSpacing)))
             drawString(lines[i], x + width / 2 - lineWidth / 2, y + (i * (lineHeight + lineSpacing)).toFloat(), color, style)
 
             if (lineWidth > longest)
