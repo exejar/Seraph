@@ -10,28 +10,33 @@ fun String.wrap(
     font: GLFont
 ): String {
     val words = this.explode(splitChars)
-    val builder = StringBuilder()
-    var lineLength = 0f
 
-    words.forEach { word ->
-        val wordLength = fontRenderer.getWidth(word, font)
+    var lineLength = 0f
+    val builder = StringBuilder()
+    for (word in words) {
+        var wordLength = fontRenderer.getWidth(word, font)
+        var formattedWord = word
 
         if (lineLength + wordLength > width) {
-            if (lineLength > 0) builder.appendLine()
-
-            var remaining = word
-            while (fontRenderer.getWidth(remaining, font) > width) {
-                val slice = remaining.substring(0, width - 1) + '-'
-                builder.appendLine(slice)
-                remaining = remaining.substring(width - 1)
+            if (lineLength > 0) {
+                builder.appendLine()
+                lineLength = 0f
             }
-            builder.append(remaining.trim())
-            lineLength = fontRenderer.getWidth(remaining, font)
-        } else {
-            builder.append(word.trim())
-            lineLength += wordLength
+
+            while (wordLength > width) {
+                builder.append(word, 0, width - 1).append('-')
+                wordLength = fontRenderer.getWidth(word.substring(width - 1), font)
+
+                builder.appendLine()
+            }
+
+            formattedWord = word.trim()
         }
+
+        builder.append(formattedWord)
+        lineLength += wordLength
     }
+
     return builder.toString()
 }
 
