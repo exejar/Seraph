@@ -1,13 +1,13 @@
 package club.maxstats.seraph.util
 
-import ApiKeyThrottleException
-import HypixelAPIException
+import club.maxstats.hyko.ApiKeyThrottleException
+import club.maxstats.hyko.HypixelAPIException
+import club.maxstats.hyko.Player
+import club.maxstats.hyko.getPlayerFromUUID
 import club.maxstats.seraph.Main
-import getPlayerFromUUID
 import kotlinx.serialization.json.Json
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
-import player.Player
 import java.io.InputStream
 import java.time.Duration
 import java.util.*
