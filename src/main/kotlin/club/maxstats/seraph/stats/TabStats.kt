@@ -1,4 +1,4 @@
-package club.maxstats.seraph.tabstats
+package club.maxstats.seraph.stats
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiIngame
