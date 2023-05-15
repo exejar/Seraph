@@ -2,18 +2,17 @@ package club.maxstats.seraph.util
 
 import ApiKeyThrottleException
 import HypixelAPIException
-import PlayerNotFoundException
 import club.maxstats.seraph.Main
 import getPlayerFromUUID
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.ScaledResolution
 import player.Player
 import java.io.InputStream
 import java.time.Duration
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.collections.HashMap
+import kotlin.math.abs
+
 private val playerCache = SimpleCache<UUID, Player>(500, Duration.ofMinutes(5))
 private val safeJson = Json { ignoreUnknownKeys = true }
 fun String.asResource(): InputStream = Main::class.java.classLoader.getResourceAsStream(this)
@@ -23,7 +22,11 @@ fun InputStream.readToString() = this.readBytes().toString(Charsets.UTF_8)
 fun String.deserializeLocraw() {
     locrawInfo = safeJson.decodeFromString<LocrawInfo>(this)
 }
+infix fun Float.isCloseTo(other: Float) = abs(this - other) < 0.0001f
 val mc = Minecraft.getMinecraft()
+fun getScaledResolution(): ScaledResolution {
+    return ScaledResolution(mc)
+}
 val isOnHypixel: Boolean
         get() =
             if (mc.theWorld != null && !mc.isSingleplayer)
@@ -49,7 +52,7 @@ suspend fun UUID.getPlayerData() : Player? {
     return playerCache.get(this)
         ?: try {
             if (now() - keyThrottleStart >= 70 * 1000)
-                getPlayerFromUUID(this.toString(), apiKey).also { playerCache.put(this, it) }
+                getPlayerFromUUID(this.toString(), hypixelApiKey).also { playerCache.put(this, it) }
             else
                 return null
         } catch (ex: HypixelAPIException) {
@@ -58,4 +61,4 @@ suspend fun UUID.getPlayerData() : Player? {
             return null
         }
 }
-var apiKey : String = ""
+var hypixelApiKey : String = ""
