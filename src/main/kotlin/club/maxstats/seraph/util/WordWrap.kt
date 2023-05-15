@@ -19,7 +19,7 @@ fun String.wrap(
 
         if (lineLength + wordLength > width) {
             if (lineLength > 0) {
-                builder.appendLine()
+                builder.append(System.lineSeparator())
                 lineLength = 0f
             }
 
@@ -27,7 +27,7 @@ fun String.wrap(
                 builder.append(word, 0, width - 1).append('-')
                 wordLength = fontRenderer.getWidth(word.substring(width - 1), font)
 
-                builder.appendLine()
+                builder.append(System.lineSeparator())
             }
 
             formattedWord = word.trim()
