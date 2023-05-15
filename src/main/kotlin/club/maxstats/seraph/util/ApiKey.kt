@@ -1,5 +1,7 @@
 package club.maxstats.seraph.util
 
+import club.maxstats.seraph.render.Position
+import club.maxstats.seraph.render.none
 import club.maxstats.weave.loader.api.event.ChatReceivedEvent
 import club.maxstats.weave.loader.api.event.SubscribeEvent
 import kotlinx.serialization.SerialName
@@ -23,6 +25,8 @@ class ApiKey {
             val json = Json.encodeToString(Config.serializer(), Config(key))
             file.writeText(json)
             hypixelApiKey = key
+
+            none("Seraph", "Retrieved and stored API Key", 4000, Position.BOTTOM_RIGHT)
         }
     }
     @Serializable
