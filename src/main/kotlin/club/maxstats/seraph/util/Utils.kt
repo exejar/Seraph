@@ -5,6 +5,9 @@ import club.maxstats.hyko.HypixelAPIException
 import club.maxstats.hyko.Player
 import club.maxstats.hyko.getPlayerFromUUID
 import club.maxstats.seraph.Main
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
@@ -48,18 +51,23 @@ fun calculateScaleFactor(mc: Minecraft): Int {
     return scaleFactor
 }
 private var keyThrottleStart: Long = 0L
-suspend fun getPlayerData(uuid: UUID) : Player? {
-    println("$hypixelApiKey API KEY")
+private val statScope = CoroutineScope(Dispatchers.Default)
+fun getOrPutPlayerData(uuid: UUID) : Player? {
     return playerCache.get(uuid)
         ?: try {
-            if (now() - keyThrottleStart >= 70 * 1000)
-                getPlayerFromUUID(uuid.toString(), hypixelApiKey).also { playerCache.put(uuid, it) }
-            else
-                return null
+            if (now() - keyThrottleStart >= 70 * 1000) {
+                statScope.launch {
+                    getPlayerFromUUID(uuid.toString(), hypixelApiKey).also { playerCache.put(uuid, it) }
+                }
+            }
+            return null
         } catch (ex: HypixelAPIException) {
             if (ex is ApiKeyThrottleException)
                 keyThrottleStart = now()
             return null
         }
+}
+fun getPlayerData(uuid: UUID): Player? {
+    return playerCache.get(uuid)
 }
 var hypixelApiKey : String = ""

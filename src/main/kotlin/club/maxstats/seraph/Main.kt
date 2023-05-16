@@ -10,7 +10,7 @@ import club.maxstats.weave.loader.api.event.SubscribeEvent
 import kotlinx.coroutines.*
 
 lateinit var fontManager: FontManager
-val statScope = CoroutineScope(Dispatchers.Default)
+
 class Main : ModInitializer {
 
     override fun init() {
@@ -23,9 +23,7 @@ class Main : ModInitializer {
     @SubscribeEvent
     fun onListAdd(event: PlayerListEvent.Add) {
         if (locrawInfo.inGame()) {
-            statScope.launch {
-                getPlayerData(event.playerData.profile.id)
-            }
+            getOrPutPlayerData(event.playerData.profile.id)
         }
     }
 }
