@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 class GuiIngameMixin {
     @JvmField @Shadow var overlayPlayerList : GuiPlayerTabOverlay = GuiPlayerTabOverlay(Minecraft.getMinecraft(), this as GuiIngame)
     @Inject(method = ["<init>"], at = [At("TAIL")])
-    private fun statOverlay(mc: Minecraft) {
+    private fun statOverlay(mc: Minecraft, ci: CallbackInfo) {
         overlayPlayerList = TabStatsGui(mc, this as GuiIngame)
     }
 }
