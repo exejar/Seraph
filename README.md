@@ -9,7 +9,7 @@ Seraph was a passion project I started in 2019, and since then have stopped deve
 ### Features
 * Detailed and customizable statistics for Hypixel
 * Streamlined API wrapper for Hypixel, making it easy to fetch and parse data
-* GLSL shaders for all rendering, providing high-quality graphics
+* GLSL shaders for most rendering, providing high-quality graphics
 
 
 ### Images
