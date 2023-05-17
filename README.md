@@ -13,7 +13,7 @@ Seraph was a passion project I started in 2019, and since then have stopped deve
 
 
 ### Images
-![bedwars](https://github.com/exejar/Seraph/assets/56853437/176f848c-707e-4c49-8c02-c11c22e568f0)
+![bedwars](https://github.com/exejar/Seraph/assets/56853437/bcde58e1-fd2d-4f1b-b336-4ddde2c092ec)
 
 
 ### Installation
