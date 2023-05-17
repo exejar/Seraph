@@ -12,6 +12,10 @@ Seraph was a passion project I started in 2019, and since then have stopped deve
 * GLSL shaders for all rendering, providing high-quality graphics
 
 
+### Images
+![bedwars](https://github.com/exejar/Seraph/assets/56853437/176f848c-707e-4c49-8c02-c11c22e568f0)
+
+
 ### Installation
 1. Download Weave
 2. Download the latest release of Seraph from the GitHub releases page
