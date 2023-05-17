@@ -149,4 +149,13 @@ abstract class ShaderProgram(
             )
         }
     }
+
+    open inner class UniformSampler(
+        name: String,
+        var textureId: Int = 0
+    ): Uniform(name) {
+        override fun apply() {
+            glUniform1i(this.location, this.textureId)
+        }
+    }
 }
