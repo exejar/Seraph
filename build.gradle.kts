@@ -22,7 +22,7 @@ configurations.implementation.get().extendsFrom(runtime)
 runtime.isTransitive = false
 
 dependencies {
-    runtime("com.github.exejar:HyKo:b083e4bdde")
+    runtime("com.github.exejar:HyKo:9c840f932e")
     runtime("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     compileOnly("com.github.weave-mc:weave-loader:c8c6186117")

@@ -199,7 +199,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
     private val Player.statList: List<String>
         get() = when (locrawInfo.gameType) {
             GameType.BEDWARS -> mutableListOf(
-                "${this.stats.bedwars.overall.level}\u272B",
+                "${this.achievements.bedwarsLevel}\u272B",
                 this.stats.bedwars.overall.winstreak.toString(),
                 getStatRatio(this.stats.bedwars.overall.wins, this.stats.bedwars.overall.losses).toString(),
                 getStatRatio(this.stats.bedwars.overall.finalKills, this.stats.bedwars.overall.finalDeaths).toString(),
