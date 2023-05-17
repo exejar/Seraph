@@ -67,6 +67,9 @@ fun getOrPutPlayerData(uuid: UUID) : Player? {
             return null
         }
 }
+fun getStatRatio(num1: Number, num2: Number) : Double {
+    return String.format("%.2f", num1.toDouble() / num2.toDouble()).toDouble()
+}
 fun getPlayerData(uuid: UUID): Player? {
     return playerCache.get(uuid)
 }
