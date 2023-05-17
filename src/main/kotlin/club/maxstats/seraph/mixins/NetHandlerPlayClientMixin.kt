@@ -1,6 +1,8 @@
 package club.maxstats.seraph.mixins
 
+import club.maxstats.seraph.event.JoinGameEvent
 import club.maxstats.seraph.util.deserializeLocraw
+import club.maxstats.weave.loader.api.event.EventBus
 import net.minecraft.client.network.NetHandlerPlayClient
 import net.minecraft.network.play.server.S02PacketChat
 import org.spongepowered.asm.mixin.Mixin
@@ -14,5 +16,13 @@ class NetHandlerPlayClientMixin {
     fun handleChatInject(chat: S02PacketChat, ci: CallbackInfo) {
         if (chat.chatComponent.unformattedText.startsWith("{\"server\":"))
             chat.chatComponent.unformattedText.deserializeLocraw()
+    }
+    @Inject(method = ["handleJoinGame"], at = [At("HEAD")])
+    fun joinGameEventPreInject(ci: CallbackInfo) {
+        EventBus.callEvent(JoinGameEvent.Pre())
+    }
+    @Inject(method = ["handleJoinGame"], at = [At("TAIL")])
+    fun joinGameEventPostInject(ci: CallbackInfo) {
+        EventBus.callEvent(JoinGameEvent.Post())
     }
 }
