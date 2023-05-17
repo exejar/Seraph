@@ -2,6 +2,7 @@ package club.maxstats.seraph.stats
 
 import club.maxstats.hyko.Player
 import club.maxstats.seraph.render.Color
+import club.maxstats.seraph.render.drawBlurredRect
 import club.maxstats.seraph.render.drawRoundedRect
 import club.maxstats.seraph.util.*
 import com.google.common.collect.ComparisonChain
@@ -19,6 +20,7 @@ import net.minecraft.scoreboard.ScorePlayerTeam
 import net.minecraft.scoreboard.Scoreboard
 import net.minecraft.world.WorldSettings
 import org.apache.commons.lang3.text.WordUtils
+import org.lwjgl.opengl.GL11
 
 class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOverlay(minecraft, guiIngame) {
     override fun renderPlayerlist(width: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
@@ -30,22 +32,23 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
     private val entryHeight = 10f
     private val backgroundBorderSize = 10f
     private val headSize = 10
-    private fun renderStatTab(width: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
+    private val maxNameLength = mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}WWWWWWWWWWWWWWWW")
+    private fun renderStatTab(screenWidth: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
         val netHandler = mc.netHandler
         /* Grab downwards of 40 players, since we don't wrap players in the custom tab list */
         val playerList = playerOrdering.sortedCopy(netHandler.playerInfoMap).subList(0,
             netHandler.playerInfoMap.size.coerceAtMost(40)
         )
 
+        val width = (headSize + 2) * 3 + maxNameLength + statTitles.fold(0) { acc, title -> acc + mc.fontRendererObj.getStringWidth(title) + 10 }
         var nameWidth = 0
         var objectiveWidth = 0
 
-        val scaledRes = getScaledResolution()
-        val startingX = scaledRes.scaledWidth / 2f - width / 2f
-        val startingY = 12f
+        val startingX = screenWidth / 2f - width / 2f
+        val startingY = 24f
 
-        val outerColor = Color(0,0,0,50)
-        val innerColor = Color(0,0,0,50)
+        val outerColor = Color(0,0,0,100)
+        val innerColor = Color(255,255,255, 100)
 
         GlStateManager.pushMatrix()
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
@@ -54,21 +57,35 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
 
         /* background */
+        drawBlurredRect(
+            startingX - this.backgroundBorderSize,
+            startingY - this.backgroundBorderSize,
+            width + this.backgroundBorderSize * 2,
+            (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
+        )
         drawRoundedRect(
             startingX - this.backgroundBorderSize,
             startingY - this.backgroundBorderSize,
-            scaledRes.scaledWidth / 2f + width / 2f + this.backgroundBorderSize,
-            startingY + (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize,
-            4f,
+            width + this.backgroundBorderSize * 2,
+            (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
+            6f,
+            outerColor
+        )
+        drawRoundedRect(
+            startingX - this.backgroundBorderSize,
+            startingY - this.backgroundBorderSize,
+            width + this.backgroundBorderSize * 2,
+            (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
+            6f,
             outerColor
         )
         /* title-bar for stat names */
         drawRoundedRect(
             startingX,
             startingY,
-            scaledRes.scaledWidth / 2f + width / 2f,
-            startingY + entryHeight,
-            4f, 4f, 0f, 0f,
+            width.toFloat(),
+            entryHeight,
+            6f, 6f, 0f, 0f,
             innerColor
         )
 
@@ -77,7 +94,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
         mc.fontRendererObj.drawStringWithShadow("${ChatColor.BOLD}NAME", xSpacer, startingY + (entryHeight / 2 - 4), Color.white.toRGBA())
 
         /* Longest possible name */
-        xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}[YOUTUBE] WWWWWWWWWWWWWWWW") + 10
+        xSpacer += maxNameLength + 10
 
         val statTitles = statTitles
         statTitles.forEach {
@@ -87,7 +104,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
                 startingY + (entryHeight / 2 - 4),
                 Color.white.toRGBA()
             )
-            xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}$it")
+            xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}$it") + 10
         }
 
         var ySpacer = startingY + entryHeight + 1
@@ -99,22 +116,22 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
                 drawRoundedRect(
                     xSpacer,
                     ySpacer,
-                    scaledRes.scaledWidth / 2f + width / 2f,
-                    ySpacer + entryHeight,
-                    0f, 0f, 4f, 4f,
+                    width.toFloat(),
+                    entryHeight,
+                    0f, 0f, 6f, 6f,
                     innerColor
                 )
             else
                 drawRoundedRect(
                     xSpacer,
                     ySpacer,
-                    scaledRes.scaledWidth / 2f + width / 2f,
-                    ySpacer + entryHeight,
+                    width.toFloat(),
+                    entryHeight,
                     0f, 0f, 0f, 0f,
                     innerColor
                 )
 
-            var playerName = getPlayerName(it)
+            val playerName = getPlayerName(it)
             val gameProfile = it.gameProfile
 
             if (mc.isIntegratedServerRunning || mc.netHandler.networkManager.isencrypted) {
@@ -138,18 +155,18 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             if (it.gameType == WorldSettings.GameType.SPECTATOR) {
                 // idk
             } else {
+                mc.fontRendererObj.drawStringWithShadow(playerName, startingX + headSize + 2, ySpacer + (entryHeight / 2 - 4), -1)
+
                 val playerData = getPlayerData(gameProfile.id)
                 if (playerData != null) {
                     val statList = playerData.statList
-                    xSpacer = startingX + mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}[YOUTUBE] WWWWWWWWWWWWWWWW") + 10 + headSize + 2
+                    xSpacer = startingX + maxNameLength + 10 + headSize + 2
 
-                    statList.forEach { stat ->
+                    statList.forEachIndexed { index, stat ->
                         mc.fontRendererObj.drawString(stat, xSpacer.toInt(), (ySpacer + (entryHeight / 2 - 4)).toInt(), Color.white.toRGBA())
-                        xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}${statTitles[statList.indexOf(stat)]}")
+                        xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}${statTitles[index]}") + 10
                     }
                 }
-
-                mc.fontRendererObj.drawStringWithShadow(playerName, xSpacer, ySpacer + (entryHeight / 2 - 4), -1)
             }
 
             ySpacer += entryHeight + 1
@@ -161,13 +178,11 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
     private val statTitles: List<String>
         get() = when (locrawInfo.gameType) {
             GameType.BEDWARS -> mutableListOf(
-                "Star",
+                "STAR",
                 "WS",
                 "WLR",
                 "FKDR",
                 "BBLR",
-                "FKS",
-                "WINS",
             )
             GameType.DUELS -> mutableListOf(
                 "TITLE",
@@ -184,13 +199,11 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
     private val Player.statList: List<String>
         get() = when (locrawInfo.gameType) {
             GameType.BEDWARS -> mutableListOf(
-                this.stats.bedwars.overall.experience.toString(),
+                "${this.stats.bedwars.overall.level}\u272B",
                 this.stats.bedwars.overall.winstreak.toString(),
-                (this.stats.bedwars.overall.wins / this.stats.bedwars.overall.losses).toString(),
-                (this.stats.bedwars.overall.finalKills / this.stats.bedwars.overall.finalDeaths).toString(),
-                (this.stats.bedwars.overall.bedsBroken / this.stats.bedwars.overall.bedsLost).toString(),
-                this.stats.bedwars.overall.finalKills.toString(),
-                this.stats.bedwars.overall.wins.toString(),
+                getStatRatio(this.stats.bedwars.overall.wins, this.stats.bedwars.overall.losses).toString(),
+                getStatRatio(this.stats.bedwars.overall.finalKills, this.stats.bedwars.overall.finalDeaths).toString(),
+                getStatRatio(this.stats.bedwars.overall.bedsBroken, this.stats.bedwars.overall.bedsLost).toString()
             )
             GameType.DUELS -> mutableListOf(
                 "TITLE",
