@@ -3,7 +3,9 @@ Seraph is a Hypixel statistic mod designed for [Weave](https://github.com/Weave-
 
 
 ### Background
-Seraph was a passion project I started in 2019, and since then have stopped development on. This is a remake and cleanup of the original mod I created, with more features, cleaner structure, and faster responses.
+Seraph was a passion project I started in 2019 with [Kay](https://github.com/Clemintina), and since then have stopped development on. This is a remake and cleanup of the original mod we created, with more features, cleaner structure, and faster responses.
+
+*Special thanks to [yabqy](https://github.com/yabqy) and [Directives](https://github.com/DirectivesMods) for the help on the original TabStats mod <3*
 
 
 ### Features
