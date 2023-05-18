@@ -110,8 +110,8 @@ class FontRenderer(
      */
     fun drawString(
         text: String,
-        x: Double,
-        y: Double,
+        x: Float,
+        y: Float,
         color: Int,
         style: FontStyle = FontStyle.PLAIN
     ) {
@@ -129,13 +129,13 @@ class FontRenderer(
      */
     fun drawWrappedString(
         text: String,
-        x: Double,
-        y: Double,
-        width: Double,
-        lineSpacing: Double,
+        x: Float,
+        y: Float,
+        width: Float,
+        lineSpacing: Float,
         color: Int,
         style: FontStyle = FontStyle.PLAIN
-    ): Pair<Double, Double> {
+    ): Pair<Float, Float> {
         val font = getFontFromStyle(style)
         val lines = text.wrap(
             ceil(width).toInt(),
@@ -143,14 +143,14 @@ class FontRenderer(
             font
         ).split(System.lineSeparator())
 
-        var height = 0.0
-        var longest = 0.0
+        var height = 0f
+        var longest = 0f
 
         for (i in lines.indices) {
-            val lineWidth = getWidth(lines[i], font).toDouble()
-            val lineHeight = getHeight(lines[i], font).toDouble()
+            val lineWidth = getWidth(lines[i], font)
+            val lineHeight = getHeight(lines[i], font)
 
-            drawString(lines[i], x, y + (i * (lineHeight + lineSpacing)).toFloat(), color, style)
+            drawString(lines[i], x, y + (i * (lineHeight + lineSpacing)), color, style)
 
             if (lineWidth > longest)
                 longest = lineWidth
@@ -163,13 +163,13 @@ class FontRenderer(
 
     fun drawCenteredWrappedString(
         text: String,
-        x: Double,
-        y: Double,
-        width: Double,
-        lineSpacing: Double,
+        x: Float,
+        y: Float,
+        width: Float,
+        lineSpacing: Float,
         color: Int,
         style: FontStyle = FontStyle.PLAIN
-    ): Pair<Double, Double> {
+    ): Pair<Float, Float> {
         val font = getFontFromStyle(style)
         val lines = text.wrap(
             ceil(width).toInt(),
@@ -177,14 +177,14 @@ class FontRenderer(
             font
         ).split(System.lineSeparator())
 
-        var height = 0.0
-        var longest = 0.0
+        var height = 0f
+        var longest = 0f
 
         for (i in lines.indices) {
-            val lineWidth = getWidth(lines[i], font).toDouble()
-            val lineHeight = getHeight(lines[i], font).toDouble()
+            val lineWidth = getWidth(lines[i], font)
+            val lineHeight = getHeight(lines[i], font)
 
-            drawString(lines[i], x + width / 2 - lineWidth / 2, y + (i * (lineHeight + lineSpacing)).toFloat(), color, style)
+            drawString(lines[i], x + width / 2 - lineWidth / 2, y + (i * (lineHeight + lineSpacing)), color, style)
 
             if (lineWidth > longest)
                 longest = lineWidth
@@ -421,7 +421,7 @@ class GLFont(
             val width = bounds.width.toFloat() + 8.0f
             val height = bounds.height.toFloat()
 
-            val image = BufferedImage(ceil(width.toDouble()).toInt(), ceil(height.toDouble()).toInt(), BufferedImage.TYPE_INT_ARGB)
+            val image = BufferedImage(ceil(width.toFloat()).toInt(), ceil(height.toFloat()).toInt(), BufferedImage.TYPE_INT_ARGB)
             val g2d = image.createGraphics()
 
             g2d.font = plainFont

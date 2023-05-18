@@ -77,16 +77,16 @@ private class Alert(
 
         titleRenderer.drawString(
             title,
-            ceil(spring.x.current + width / 2 - titleRenderer.getWidth(title) / 2).toDouble(),
-            ceil(spring.y.current + headerHeight / 2 - titleRenderer.getHeight(title) / 2).toDouble(),
+            ceil(spring.x.current + width / 2 - titleRenderer.getWidth(title) / 2),
+            ceil(spring.y.current + headerHeight / 2 - titleRenderer.getHeight(title) / 2),
             white.copy(alpha = fade.curColor.alpha).toRGBA()
         )
         defaultRenderer.drawCenteredWrappedString(
             text,
-            (spring.x.current + 5).toDouble(),
-            (spring.y.current + defaultRenderer.getHeight(text) + 10).toDouble(),
-            width - 10.0,
-            3.0,
+            (spring.x.current + 5),
+            (spring.y.current + defaultRenderer.getHeight(text) + 10),
+            width - 10f,
+            3f,
             white.copy(alpha = fade.curColor.alpha).toRGBA(),
             FontStyle.PLAIN
         )
