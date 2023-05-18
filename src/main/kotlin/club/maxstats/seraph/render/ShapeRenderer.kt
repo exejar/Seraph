@@ -35,9 +35,23 @@ fun drawBlurredRect(
     y: Float,
     width: Float,
     height: Float,
+    topLeftRadius: Float = 4f,
+    topRightRadius: Float = 4f,
+    bottomLeftRadius: Float = 4f,
+    bottomRightRadius: Float = 4f,
     blurRadius: Float = 18f
 ) {
-    blurProgram.render(x, y, width, height, blurRadius)
+    blurProgram.render(x, y, width, height, topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, blurRadius)
+}
+fun drawBlurredRect(
+    x: Float,
+    y: Float,
+    width: Float,
+    height: Float,
+    rectRadius: Float = 4f,
+    blurRadius: Float = 18f
+) {
+    drawBlurredRect(x, y, width, height, rectRadius, rectRadius, rectRadius, rectRadius, blurRadius)
 }
 
 fun drawQuad(

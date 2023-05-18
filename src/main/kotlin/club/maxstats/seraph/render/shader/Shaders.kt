@@ -58,34 +58,19 @@ class BlurProgram: ShaderProgram() {
     val texture = UniformSampler("u_texture")
     val texelSize = Uniform2f("u_texelSize")
     val direction = Uniform2f("u_direction")
-    val radius = Uniform1f("u_radius")
+    val blurRadius = Uniform1f("u_blurRadius")
+    val rectRadius = Uniform4f("u_rectRadius")
+    val location = Uniform4f("u_location")
     override fun register() {
         registerShader("assets/shaders/blur.fsh", GL20.GL_FRAGMENT_SHADER)
         registerShader("assets/shaders/blur.vsh", GL20.GL_VERTEX_SHADER)
     }
 
     // TODO don't use stencils
-    private fun renderFrameBufferTexture(
-        x: Float,
-        y: Float,
-        width: Float,
-        height: Float,
-        frameBuffer: Framebuffer
-    ) {
+    private fun renderFrameBufferTexture(frameBuffer: Framebuffer) {
         val scaledRes = getScaledResolution()
         val texX = frameBuffer.framebufferWidth.toFloat() / frameBuffer.framebufferTextureWidth.toFloat()
         val texY = frameBuffer.framebufferHeight.toFloat() / frameBuffer.framebufferTextureHeight.toFloat()
-
-
-        glClear(GL_STENCIL_BUFFER_BIT)
-        glEnable(GL_STENCIL_TEST)
-        glStencilFunc(GL_ALWAYS, 1, 0xFF)
-        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE)
-        glStencilMask(0xFF)
-
-        drawQuad(x, y, x + width, y + height)
-
-        glStencilFunc(GL_EQUAL, 1, 0xFF)
 
         glBegin(GL_QUADS)
         glTexCoord2f(0f, 0f)
@@ -97,17 +82,18 @@ class BlurProgram: ShaderProgram() {
         glTexCoord2f(0f, texY)
         glVertex3f(0f, 0f, 0f)
         glEnd()
-
-        glDisable(GL_STENCIL_TEST)
     }
 
     var blurredBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
-
     fun render(
         x: Float = 0f,
         y: Float = 0f,
         width: Float = getScaledResolution().scaledWidth_double.toFloat(),
         height: Float = getScaledResolution().scaledHeight_double.toFloat(),
+        topLeftRadius: Float,
+        topRightRadius: Float,
+        bottomLeftRadius: Float,
+        bottomRightRadius: Float,
         blurRadius: Float = 18f
     ) {
         begin()
@@ -115,30 +101,42 @@ class BlurProgram: ShaderProgram() {
         blurredBuffer.framebufferClear()
         blurredBuffer.bindFramebuffer(true)
 
-        GL20.glUseProgram(this.program)
-
         texelSize.x = 1f / mc.displayWidth
         texelSize.y = 1f / mc.displayHeight
         texture.textureId = 0
-        radius.x = ceil(2 * blurRadius)
+        this.blurRadius.x = ceil(2 * blurRadius)
         direction.x = 1f
         direction.y = 0f
 
-        applyUniforms(Display.getWidth().toFloat(), Display.getHeight().toFloat())
+        val sr = getScaledResolution()
+        val scale = sr.scaleFactor
+        val trueScale = (mc.displayWidth.toFloat() / sr.scaledWidth_double.toFloat()) / 2f
+
+        location.x = x * scale
+        location.y = mc.displayHeight - (y + height) * scale
+        location.z = width * trueScale
+        location.w = height * trueScale
+
+        rectRadius.x = topRightRadius
+        rectRadius.y = bottomRightRadius
+        rectRadius.z = topLeftRadius
+        rectRadius.w = bottomLeftRadius
+
+        applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
         mc.framebuffer.bindFramebufferTexture()
-        renderFrameBufferTexture(x, y, width, height, blurredBuffer)
+        renderFrameBufferTexture(blurredBuffer)
 
         blurredBuffer.unbindFramebuffer()
 
         direction.x = 0f
         direction.y = 1f
 
-        applyUniforms(Display.getWidth().toFloat(), Display.getHeight().toFloat())
+        applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
         mc.framebuffer.bindFramebuffer(true)
         blurredBuffer.bindFramebufferTexture()
-        renderFrameBufferTexture(x, y, width, height, mc.framebuffer)
+        renderFrameBufferTexture(mc.framebuffer)
 
         end()
     }

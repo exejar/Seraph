@@ -65,6 +65,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
             (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
+            6f
         )
         drawRoundedRect(
             startingX - this.backgroundBorderSize,
