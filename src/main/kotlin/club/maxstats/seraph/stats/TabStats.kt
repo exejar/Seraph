@@ -33,6 +33,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
     private val backgroundBorderSize = 10f
     private val headSize = 10
     private val maxNameLength = mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}WWWWWWWWWWWWWWWW")
+    private val playerTagLength = mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}WWWWWWWW")
     private fun renderStatTab(screenWidth: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
         val netHandler = mc.netHandler
         /* Grab downwards of 40 players, since we don't wrap players in the custom tab list */
@@ -40,7 +41,11 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             netHandler.playerInfoMap.size.coerceAtMost(40)
         )
 
-        val width = (headSize + 2) * 3 + maxNameLength + statTitles.fold(0) { acc, title -> acc + mc.fontRendererObj.getStringWidth(title) + 10 }
+        val width = (headSize + 2) * 3 +
+                    maxNameLength + 10 +
+                    (playerTagLength + 10) +
+                    statTitles.fold(0) { acc, title -> acc + mc.fontRendererObj.getStringWidth(title) + 10 }
+
         var nameWidth = 0
         var objectiveWidth = 0
 
@@ -92,9 +97,11 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
         var xSpacer = startingX + headSize + 2
 
         mc.fontRendererObj.drawStringWithShadow("${ChatColor.BOLD}NAME", xSpacer, startingY + (entryHeight / 2 - 4), Color.white.toRGBA())
-
         /* Longest possible name */
         xSpacer += maxNameLength + 10
+
+        mc.fontRendererObj.drawStringWithShadow("${ChatColor.BOLD}TAG", xSpacer, startingY + (entryHeight / 2 - 4), Color.white.toRGBA())
+        xSpacer += playerTagLength + 10
 
         val statTitles = statTitles
         statTitles.forEach {
@@ -155,13 +162,20 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             if (it.gameType == WorldSettings.GameType.SPECTATOR) {
                 // idk
             } else {
-                mc.fontRendererObj.drawStringWithShadow(playerName, startingX + headSize + 2, ySpacer + (entryHeight / 2 - 4), -1)
+                xSpacer = startingX + headSize + 2
+
+                /* Render Player Name */
+                mc.fontRendererObj.drawStringWithShadow(playerName, xSpacer, ySpacer + (entryHeight / 2 - 4), -1)
+                xSpacer += maxNameLength + 10
+
+                /* Render Player Tag */
+                val playerTag = getPlayerTag(gameProfile.id)
+                mc.fontRendererObj.drawStringWithShadow(playerTag.formattedName, xSpacer, ySpacer + (entryHeight / 2 - 4), playerTag.color.toRGBA())
+                xSpacer += playerTagLength + 10
 
                 val playerData = getPlayerData(gameProfile.id)
                 if (playerData != null) {
                     val statList = playerData.statList
-                    xSpacer = startingX + maxNameLength + 10 + headSize + 2
-
                     statList.forEachIndexed { index, stat ->
                         mc.fontRendererObj.drawString(stat, xSpacer.toInt(), (ySpacer + (entryHeight / 2 - 4)).toInt(), Color.white.toRGBA())
                         xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}${statTitles[index]}") + 10
@@ -198,13 +212,18 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
 
     private val Player.statList: List<String>
         get() = when (locrawInfo.gameType) {
-            GameType.BEDWARS -> mutableListOf(
-                "${this.achievements.bedwarsLevel}\u272B",
-                this.stats.bedwars.overall.winstreak.toString(),
-                getStatRatio(this.stats.bedwars.overall.wins, this.stats.bedwars.overall.losses).toString(),
-                getStatRatio(this.stats.bedwars.overall.finalKills, this.stats.bedwars.overall.finalDeaths).toString(),
-                getStatRatio(this.stats.bedwars.overall.bedsBroken, this.stats.bedwars.overall.bedsLost).toString()
-            )
+            GameType.BEDWARS -> {
+                /* Maybe update this to include formatting in the cache, so we don't constantly format over and over again
+                (although this might mess up the star wave animation */
+                val formatted = BedwarsFormatting(this)
+                mutableListOf(
+                    formatted.formattedStar,
+                    formatted.formattedWinstreak,
+                    formatted.formattedWLR,
+                    formatted.formattedFKDR,
+                    formatted.formattedBBLR
+                )
+            }
             GameType.DUELS -> mutableListOf(
                 "TITLE",
                 "WS",
