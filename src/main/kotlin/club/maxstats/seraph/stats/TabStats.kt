@@ -41,7 +41,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             netHandler.playerInfoMap.size.coerceAtMost(40)
         )
 
-        val width = (headSize + 2) * 3 +
+        val width = (headSize + 2) * 2 +
                     maxNameLength + 10 +
                     (playerTagLength + 10) +
                     statTitles.fold(0) { acc, title -> acc + mc.fontRendererObj.getStringWidth(title) + 10 }
@@ -177,7 +177,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
                 if (playerData != null) {
                     val statList = playerData.statList
                     statList.forEachIndexed { index, stat ->
-                        mc.fontRendererObj.drawString(stat, xSpacer.toInt(), (ySpacer + (entryHeight / 2 - 4)).toInt(), Color.white.toRGBA())
+                        mc.fontRendererObj.drawStringWithShadow(stat, xSpacer, ySpacer + (entryHeight / 2 - 4), Color.white.toRGBA())
                         xSpacer += mc.fontRendererObj.getStringWidth("${ChatColor.BOLD}${statTitles[index]}") + 10
                     }
                 }
