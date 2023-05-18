@@ -1,6 +1,6 @@
 package club.maxstats.seraph.mixins
 
-import club.maxstats.seraph.stats.TabStatsGui
+import club.maxstats.seraph.stats.features.TabStatsGui
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiIngame
 import net.minecraft.client.gui.GuiPlayerTabOverlay

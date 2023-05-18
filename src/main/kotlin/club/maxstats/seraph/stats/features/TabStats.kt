@@ -1,9 +1,11 @@
-package club.maxstats.seraph.stats
+package club.maxstats.seraph.stats.features
 
 import club.maxstats.hyko.Player
 import club.maxstats.seraph.render.Color
 import club.maxstats.seraph.render.drawBlurredRect
 import club.maxstats.seraph.render.drawRoundedRect
+import club.maxstats.seraph.stats.BedwarsFormatting
+import club.maxstats.seraph.stats.getPlayerTag
 import club.maxstats.seraph.util.*
 import com.google.common.collect.ComparisonChain
 import com.google.common.collect.Ordering
@@ -14,13 +16,9 @@ import net.minecraft.client.gui.GuiPlayerTabOverlay
 import net.minecraft.client.network.NetworkPlayerInfo
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.player.EnumPlayerModelParts
-import net.minecraft.scoreboard.IScoreObjectiveCriteria
 import net.minecraft.scoreboard.ScoreObjective
-import net.minecraft.scoreboard.ScorePlayerTeam
 import net.minecraft.scoreboard.Scoreboard
 import net.minecraft.world.WorldSettings
-import org.apache.commons.lang3.text.WordUtils
-import org.lwjgl.opengl.GL11
 
 class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOverlay(minecraft, guiIngame) {
     override fun renderPlayerlist(width: Int, scoreboard: Scoreboard?, objective: ScoreObjective?) {
