@@ -1,6 +1,7 @@
-package club.maxstats.seraph.util
+package club.maxstats.seraph.stats
 
 import club.maxstats.seraph.event.JoinGameEvent
+import club.maxstats.seraph.util.getOrPutPlayerData
 import club.maxstats.weave.loader.api.event.ChatReceivedEvent
 import club.maxstats.weave.loader.api.event.EntityListEvent
 import club.maxstats.weave.loader.api.event.SubscribeEvent
@@ -25,13 +26,12 @@ class StatCacheProvider {
     @SubscribeEvent
     fun onListAdd(event: EntityListEvent.Add) {
         if (event.entity is EntityPlayer) {
-            if (event.entity.uniqueID.version() == 4) {
-                if (grabStats)
-                    getOrPutPlayerData(event.entity.uniqueID)
-            } else {
-                /* Nicked Player */
-
-            }
+            try {
+                if (event.entity.uniqueID.version() == 4) {
+                    if (grabStats)
+                        getOrPutPlayerData(event.entity.uniqueID)
+                }
+            } catch (ignored: Exception) {}
         }
     }
 }
