@@ -141,8 +141,8 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
 
             if (mc.isIntegratedServerRunning || mc.netHandler.networkManager.isencrypted) {
                 /* Render Player Face */
-                val entityPlayer = mc.theWorld.getPlayerEntityByUUID(gameProfile.id) ?: return@forEach
-                val upsideDown = entityPlayer.isWearing(EnumPlayerModelParts.CAPE) && (gameProfile.name == "Dinnerbone" || gameProfile.name == "Grumm")
+                val entityPlayer = mc.theWorld.getPlayerEntityByUUID(gameProfile.id)
+                val upsideDown = entityPlayer != null && entityPlayer.isWearing(EnumPlayerModelParts.CAPE) && (gameProfile.name == "Dinnerbone" || gameProfile.name == "Grumm")
 
                 mc.textureManager.bindTexture(it.locationSkin)
 
@@ -151,7 +151,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
 
                 Gui.drawScaledCustomSizeModalRect(xSpacer.toInt(), ySpacer.toInt(), 8f, u.toFloat(), 8, v, headSize, headSize, 64f, 64f)
 
-                if (entityPlayer.isWearing(EnumPlayerModelParts.HAT))
+                if (entityPlayer != null && entityPlayer.isWearing(EnumPlayerModelParts.HAT))
                     Gui.drawScaledCustomSizeModalRect(xSpacer.toInt(), ySpacer.toInt(), 40f, u.toFloat(), 8, v, headSize, headSize, 64f, 64f)
 
                 xSpacer += headSize + 2
