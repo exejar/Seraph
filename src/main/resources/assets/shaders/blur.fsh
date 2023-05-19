@@ -3,14 +3,11 @@
 uniform sampler2D u_texture;
 
 uniform vec2 u_texelSize;
-uniform vec2 u_direction;
 
 uniform float u_blurRadius;
-// u_location.x = x, u_location.y = y, u_location.z = width, u_location.w = height
 uniform vec4 u_location;
 uniform vec4 u_rectRadius;
-
-#define step u_texelSize * u_direction
+uniform float u_pass;
 
 float gauss(float x, float sigma) {
     float pow = x / sigma;
@@ -28,15 +25,17 @@ void main() {
     vec4 color = vec4(0);
     vec2 texCoord = gl_TexCoord[0].st;
 
-    float distance = roundedBoxSDF(gl_FragCoord.xy - u_location.xy - u_location.zw, u_location.zw, u_rectRadius);
-
-    if (distance < 0.0) {
+    if (u_pass == 1 || u_pass == 2) {
         for (float f = -u_blurRadius; f <= u_blurRadius; f++) {
-            color += texture2D(u_texture, texCoord + f * u_texelSize * u_direction) * gauss(f, u_blurRadius / 2);
+            vec2 direction = vec2(float(u_pass == 1), float(u_pass == 2));
+            color += texture2D(u_texture, texCoord + f * u_texelSize * direction) * gauss(f, u_blurRadius / 2);
         }
-    } else {
-        color = texture2D(u_texture, texCoord);
-    }
+        gl_FragColor = vec4(color.rgb, 1.0);
+    } else if (u_pass == 3) {
+        float distance = roundedBoxSDF(gl_FragCoord.xy - u_location.xy - u_location.zw, u_location.zw, u_rectRadius);
 
-    gl_FragColor = vec4(color.rgb, 1.0);
+        if (distance < 0.0) {
+            gl_FragColor = texture2D(u_texture, texCoord);
+        }
+    }
 }

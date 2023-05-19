@@ -5,7 +5,6 @@ import club.maxstats.seraph.render.drawQuad
 import club.maxstats.seraph.util.getScaledResolution
 import club.maxstats.seraph.util.mc
 import net.minecraft.client.shader.Framebuffer
-import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL20
 import kotlin.math.ceil
@@ -57,7 +56,7 @@ class RoundedRectProgram : ShaderProgram() {
 class BlurProgram: ShaderProgram() {
     val texture = UniformSampler("u_texture")
     val texelSize = Uniform2f("u_texelSize")
-    val direction = Uniform2f("u_direction")
+    val pass = Uniform1f("u_pass")
     val blurRadius = Uniform1f("u_blurRadius")
     val rectRadius = Uniform4f("u_rectRadius")
     val location = Uniform4f("u_location")
@@ -66,7 +65,6 @@ class BlurProgram: ShaderProgram() {
         registerShader("assets/shaders/blur.vsh", GL20.GL_VERTEX_SHADER)
     }
 
-    // TODO don't use stencils
     private fun renderFrameBufferTexture(frameBuffer: Framebuffer) {
         val scaledRes = getScaledResolution()
         val texX = frameBuffer.framebufferWidth.toFloat() / frameBuffer.framebufferTextureWidth.toFloat()
@@ -84,7 +82,8 @@ class BlurProgram: ShaderProgram() {
         glEnd()
     }
 
-    var blurredBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
+    var horizontalBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
+    var verticalBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
     fun render(
         x: Float = 0f,
         y: Float = 0f,
@@ -98,15 +97,13 @@ class BlurProgram: ShaderProgram() {
     ) {
         begin()
 
-        blurredBuffer.framebufferClear()
-        blurredBuffer.bindFramebuffer(true)
+        horizontalBuffer.framebufferClear()
+        verticalBuffer.framebufferClear()
 
         texelSize.x = 1f / mc.displayWidth
         texelSize.y = 1f / mc.displayHeight
         texture.textureId = 0
         this.blurRadius.x = ceil(2 * blurRadius)
-        direction.x = 1f
-        direction.y = 0f
 
         val sr = getScaledResolution()
         val scale = sr.scaleFactor
@@ -122,21 +119,32 @@ class BlurProgram: ShaderProgram() {
         rectRadius.z = topLeftRadius
         rectRadius.w = bottomLeftRadius
 
+        // 1st gaussian blur pass
+        pass.x = 1f
         applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
+        horizontalBuffer.bindFramebuffer(true)
         mc.framebuffer.bindFramebufferTexture()
-        renderFrameBufferTexture(blurredBuffer)
+        renderFrameBufferTexture(horizontalBuffer)
 
-        blurredBuffer.unbindFramebuffer()
+        // 2nd gaussian blur pass
+        pass.x = 2f
+        applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
-        direction.x = 0f
-        direction.y = 1f
+        verticalBuffer.bindFramebuffer(true)
+        horizontalBuffer.bindFramebufferTexture()
+        renderFrameBufferTexture(verticalBuffer)
 
+        // region cutting
+        pass.x = 3f
         applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
         mc.framebuffer.bindFramebuffer(true)
-        blurredBuffer.bindFramebufferTexture()
+        verticalBuffer.bindFramebufferTexture()
         renderFrameBufferTexture(mc.framebuffer)
+
+        mc.framebuffer.unbindFramebuffer()
+        verticalBuffer.unbindFramebufferTexture()
 
         end()
     }
