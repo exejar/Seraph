@@ -82,8 +82,7 @@ class BlurProgram: ShaderProgram() {
         glEnd()
     }
 
-    var horizontalBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
-    var verticalBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
+    var blurBuffer = Framebuffer(mc.displayWidth, mc.displayHeight, false)
     fun render(
         x: Float = 0f,
         y: Float = 0f,
@@ -97,8 +96,7 @@ class BlurProgram: ShaderProgram() {
     ) {
         begin()
 
-        horizontalBuffer.framebufferClear()
-        verticalBuffer.framebufferClear()
+        blurBuffer.framebufferClear()
 
         texelSize.x = 1f / mc.displayWidth
         texelSize.y = 1f / mc.displayHeight
@@ -123,28 +121,17 @@ class BlurProgram: ShaderProgram() {
         pass.x = 1f
         applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
-        horizontalBuffer.bindFramebuffer(true)
+        blurBuffer.bindFramebuffer(true)
         mc.framebuffer.bindFramebufferTexture()
-        renderFrameBufferTexture(horizontalBuffer)
+        renderFrameBufferTexture(blurBuffer)
 
-        // 2nd gaussian blur pass
+        // 2nd gaussian blur pass and region cutting
         pass.x = 2f
         applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
 
-        verticalBuffer.bindFramebuffer(true)
-        horizontalBuffer.bindFramebufferTexture()
-        renderFrameBufferTexture(verticalBuffer)
-
-        // region cutting
-        pass.x = 3f
-        applyUniforms(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
-
         mc.framebuffer.bindFramebuffer(true)
-        verticalBuffer.bindFramebufferTexture()
+        blurBuffer.bindFramebufferTexture()
         renderFrameBufferTexture(mc.framebuffer)
-
-        mc.framebuffer.unbindFramebuffer()
-        verticalBuffer.unbindFramebufferTexture()
 
         end()
     }
