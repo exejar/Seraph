@@ -15,8 +15,7 @@ Seraph was a passion project I started in 2019 with [Kay](https://github.com/Cle
 
 
 ### Images
-![bedwars](https://github.com/exejar/Seraph/assets/56853437/fa3251aa-bb34-4511-94b2-51d8b7dc7682)
-
+![bedwars](https://github.com/exejar/Seraph/assets/56853437/5397fb52-7a16-47c6-920b-215e8e26456f)
 
 
 ### Installation
