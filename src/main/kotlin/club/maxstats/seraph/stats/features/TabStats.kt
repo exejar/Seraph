@@ -65,14 +65,14 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
             (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
-            6f
+            10f
         )
         drawRoundedRect(
             startingX - this.backgroundBorderSize,
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
             (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
-            6f,
+            10f,
             outerColor
         )
         drawRoundedRect(
@@ -80,7 +80,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
             (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
-            6f,
+            10f,
             outerColor
         )
         /* title-bar for stat names */
@@ -89,7 +89,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             startingY,
             width.toFloat(),
             entryHeight,
-            6f, 6f, 0f, 0f,
+            10f, 10f, 0f, 0f,
             innerColor
         )
 
@@ -124,7 +124,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
                     ySpacer,
                     width.toFloat(),
                     entryHeight,
-                    0f, 0f, 6f, 6f,
+                    0f, 0f, 10f, 10f,
                     innerColor
                 )
             else
