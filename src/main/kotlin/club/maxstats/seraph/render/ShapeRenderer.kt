@@ -1,11 +1,22 @@
 package club.maxstats.seraph.render
 
+import club.maxstats.seraph.event.ResizeWindowEvent
 import club.maxstats.seraph.render.shader.BlurProgram
 import club.maxstats.seraph.render.shader.RoundedRectProgram
+import club.maxstats.seraph.util.mc
+import club.maxstats.weave.loader.api.event.SubscribeEvent
 import org.lwjgl.opengl.GL11.*
 
 val roundedRectProgram = RoundedRectProgram()
 val blurProgram = BlurProgram()
+
+/* Specifically meant for event listening */
+class ShapeRenderer() {
+    @SubscribeEvent
+    fun onResize(event: ResizeWindowEvent) {
+        blurProgram.blurBuffer.createBindFramebuffer(mc.displayWidth, mc.displayHeight)
+    }
+}
 fun drawRoundedRect(
     x: Float,
     y: Float,

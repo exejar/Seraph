@@ -2,6 +2,7 @@ package club.maxstats.seraph
 
 import club.maxstats.seraph.render.AlertRender
 import club.maxstats.seraph.render.FontManager
+import club.maxstats.seraph.render.ShapeRenderer
 import club.maxstats.seraph.stats.StatCacheProvider
 import club.maxstats.seraph.util.*
 import club.maxstats.weave.loader.api.ModInitializer
@@ -16,5 +17,6 @@ class Main : ModInitializer {
         EventBus.subscribe(ApiKey())
         EventBus.subscribe(AlertRender())
         EventBus.subscribe(StatCacheProvider())
+        EventBus.subscribe(ShapeRenderer())
     }
 }
