@@ -2,10 +2,10 @@ package club.maxstats.seraph.stats
 
 import club.maxstats.seraph.event.JoinGameEvent
 import club.maxstats.seraph.util.getOrPutPlayerData
-import club.maxstats.weave.loader.api.event.ChatReceivedEvent
-import club.maxstats.weave.loader.api.event.EntityListEvent
-import club.maxstats.weave.loader.api.event.SubscribeEvent
 import net.minecraft.entity.player.EntityPlayer
+import net.weavemc.loader.api.event.ChatReceivedEvent
+import net.weavemc.loader.api.event.EntityListEvent
+import net.weavemc.loader.api.event.SubscribeEvent
 
 class StatCacheProvider {
     var grabStats: Boolean = false

@@ -2,11 +2,11 @@ package club.maxstats.seraph.util
 
 import club.maxstats.seraph.render.Position
 import club.maxstats.seraph.render.none
-import club.maxstats.weave.loader.api.event.ChatReceivedEvent
-import club.maxstats.weave.loader.api.event.SubscribeEvent
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import net.weavemc.loader.api.event.ChatReceivedEvent
+import net.weavemc.loader.api.event.SubscribeEvent
 import java.io.File
 
 class ApiKey {

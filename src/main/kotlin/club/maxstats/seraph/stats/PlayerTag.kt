@@ -14,6 +14,8 @@ fun getPlayerTag(uuid: UUID): PlayerTag {
     /* Hardcoded for testing purposes */
     if (uuid == UUID.fromString("98a3cecc-3749-4981-b246-4fc8bb6d418c"))
         tag = "CREATOR"
+    else if (uuid == UUID.fromString("8589389e-8b6b-46c2-8808-4eb71ec3479e"))
+        tag = "CREATOR"
 
     return PlayerTag.valueOf(tag)
 }

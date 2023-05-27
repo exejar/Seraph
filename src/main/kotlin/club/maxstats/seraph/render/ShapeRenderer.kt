@@ -4,7 +4,7 @@ import club.maxstats.seraph.event.ResizeWindowEvent
 import club.maxstats.seraph.render.shader.BlurProgram
 import club.maxstats.seraph.render.shader.RoundedRectProgram
 import club.maxstats.seraph.util.mc
-import club.maxstats.weave.loader.api.event.SubscribeEvent
+import net.weavemc.loader.api.event.SubscribeEvent
 import org.lwjgl.opengl.GL11.*
 
 val roundedRectProgram = RoundedRectProgram()

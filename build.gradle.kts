@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.8.20"
     kotlin("plugin.serialization") version "1.8.21"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.github.weave-mc.weave-gradle") version "823628f548"
+    id("com.github.weave-mc.weave-gradle") version "649dba7468"
     application
 }
 
@@ -25,7 +25,7 @@ dependencies {
     runtime("com.github.exejar:HyKo:9c840f932e")
     runtime("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-    compileOnly("com.github.weave-mc:weave-loader:c8c6186117")
+    compileOnly("com.github.weave-mc:weave-loader:70bd82faa6")
     compileOnly("org.spongepowered:mixin:0.8.5")
 }
 
@@ -38,7 +38,7 @@ application {
 tasks {
     withType<ShadowJar> {
         configurations = listOf(runtime)
-        destinationDirectory.set(file("${System.getProperty("user.home")}/.lunarclient/mods"))
+        destinationDirectory.set(file("${System.getProperty("user.home")}/.weave/mods"))
     }
     named<Jar>("jar") {
         enabled = false

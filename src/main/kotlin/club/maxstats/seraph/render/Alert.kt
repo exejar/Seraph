@@ -7,9 +7,9 @@ import club.maxstats.seraph.render.animation.Fade
 import club.maxstats.seraph.render.animation.Spring
 import club.maxstats.seraph.render.animation.Spring2D
 import club.maxstats.seraph.util.getScaledResolution
-import club.maxstats.weave.loader.api.event.SubscribeEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
+import net.weavemc.loader.api.event.SubscribeEvent
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.ceil
 
