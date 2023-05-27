@@ -6,5 +6,12 @@
     "club.maxstats.seraph.Main"
   ],
   "hooks": [
-  ]
+  ],
+  "about": {
+    "name": "Seraph",
+    "version": "1.0.0",
+    "author": "exejar",
+    "description": "Statistic Mod for Hypixel",
+    "website": "https://github.com/exejar/Seraph"
+  }
 }
