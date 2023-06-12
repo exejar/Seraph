@@ -1,9 +1,9 @@
 package club.maxstats.seraph.stats.features
 
 import club.maxstats.hyko.Player
-import club.maxstats.seraph.render.Color
-import club.maxstats.seraph.render.drawBlurredRect
-import club.maxstats.seraph.render.drawRoundedRect
+import club.maxstats.kolour.render.drawBlur
+import club.maxstats.kolour.render.drawRectangle
+import club.maxstats.kolour.util.Color
 import club.maxstats.seraph.stats.BedwarsFormatting
 import club.maxstats.seraph.stats.getPlayerTag
 import club.maxstats.seraph.util.*
@@ -60,14 +60,14 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0)
 
         /* background */
-        drawBlurredRect(
+        drawBlur(
             startingX - this.backgroundBorderSize,
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
             (playerList.size + 1) * (this.entryHeight + 1) - 1 + this.backgroundBorderSize * 2,
             10f
         )
-        drawRoundedRect(
+        drawRectangle(
             startingX - this.backgroundBorderSize,
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
@@ -75,7 +75,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             10f,
             outerColor
         )
-        drawRoundedRect(
+        drawRectangle(
             startingX - this.backgroundBorderSize,
             startingY - this.backgroundBorderSize,
             width + this.backgroundBorderSize * 2,
@@ -84,7 +84,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
             outerColor
         )
         /* title-bar for stat names */
-        drawRoundedRect(
+        drawRectangle(
             startingX,
             startingY,
             width.toFloat(),
@@ -119,7 +119,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
 
             /* draw rounded bottom edges, otherwise draw no rounded edges */
             if (playerList.indexOf(it) == playerList.size - 1)
-                drawRoundedRect(
+                drawRectangle(
                     xSpacer,
                     ySpacer,
                     width.toFloat(),
@@ -128,7 +128,7 @@ class TabStatsGui(minecraft: Minecraft, guiIngame: GuiIngame) : GuiPlayerTabOver
                     innerColor
                 )
             else
-                drawRoundedRect(
+                drawRectangle(
                     xSpacer,
                     ySpacer,
                     width.toFloat(),

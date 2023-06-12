@@ -1,8 +1,11 @@
 package club.maxstats.seraph.render
 
+import club.maxstats.kolour.render.FontRenderer
+import club.maxstats.kolour.render.FontStyle
+import club.maxstats.kolour.render.drawRectangle
+import club.maxstats.kolour.util.Color
 import club.maxstats.seraph.event.RenderLastEvent
 import club.maxstats.seraph.fontManager
-import club.maxstats.seraph.render.Color.Companion.white
 import club.maxstats.seraph.render.animation.Fade
 import club.maxstats.seraph.render.animation.Spring
 import club.maxstats.seraph.render.animation.Spring2D
@@ -72,14 +75,14 @@ private class Alert(
         GlStateManager.enableAlpha()
         GlStateManager.enableBlend()
 
-        drawRoundedRect(spring.x.current, spring.y.current, width, headerHeight, 6f, 6f, 0f, 0f, riskColor.copy(alpha = fade.curColor.alpha))
-        drawRoundedRect(spring.x.current, spring.y.current + headerHeight, width, height - headerHeight, 0f, 0f, 6f, 6f, fade.curColor)
+        drawRectangle(spring.x.current, spring.y.current, width, headerHeight, 6f, 6f, 0f, 0f, riskColor.copy(alpha = fade.curColor.alpha))
+        drawRectangle(spring.x.current, spring.y.current + headerHeight, width, height - headerHeight, 0f, 0f, 6f, 6f, fade.curColor)
 
         titleRenderer.drawString(
             title,
             ceil(spring.x.current + width / 2 - titleRenderer.getWidth(title) / 2),
             ceil(spring.y.current + headerHeight / 2 - titleRenderer.getHeight(title) / 2),
-            white.copy(alpha = fade.curColor.alpha).toRGBA()
+            Color.white.copy(alpha = fade.curColor.alpha).toRGBA()
         )
         defaultRenderer.drawCenteredWrappedString(
             text,
@@ -87,7 +90,7 @@ private class Alert(
             (spring.y.current + defaultRenderer.getHeight(text) + 10),
             width - 10f,
             3f,
-            white.copy(alpha = fade.curColor.alpha).toRGBA(),
+            Color.white.copy(alpha = fade.curColor.alpha).toRGBA(),
             FontStyle.PLAIN
         )
 

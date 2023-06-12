@@ -1,7 +1,7 @@
 package club.maxstats.seraph.util
 
-import club.maxstats.seraph.render.FontRenderer
-import club.maxstats.seraph.render.GLFont
+import club.maxstats.kolour.render.FontRenderer
+import club.maxstats.kolour.render.GLFont
 
 private val splitChars = charArrayOf(' ', '-', '\t')
 fun String.wrap(

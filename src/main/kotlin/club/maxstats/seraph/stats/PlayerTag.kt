@@ -1,6 +1,6 @@
 package club.maxstats.seraph.stats
 
-import club.maxstats.seraph.render.Color
+import club.maxstats.kolour.util.Color
 import java.util.*
 
 fun getPlayerTag(uuid: UUID): PlayerTag {

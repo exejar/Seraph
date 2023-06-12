@@ -1,6 +1,6 @@
 package club.maxstats.seraph.render.animation
 
-import club.maxstats.seraph.render.Color
+import club.maxstats.kolour.util.Color
 import club.maxstats.seraph.util.now
 import kotlin.math.floor
 
