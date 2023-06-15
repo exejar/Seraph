@@ -2,9 +2,22 @@ package club.maxstats.seraph.config
 
 import club.maxstats.kolour.gui.*
 import club.maxstats.kolour.util.Color
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.util.ChatComponentText
+import org.lwjgl.input.Mouse
 
 class ConfigGui: GuiScreen() {
+    val categoryButton = component {
+        fontSize = 12
+        width = 5.rem
+        height = 5.rem
+        margin = Sides(1.rem, 0.px, 1.rem, 0.px)
+
+        backgroundColor = Color(60, 60, 60, 255)
+        borderRadius = Radius(10.px)
+    }
+
     val mainScreen = gui {
         position = Position.FIXED
         alignItems = ItemAlignment.MIDDLE
@@ -40,32 +53,20 @@ class ConfigGui: GuiScreen() {
             width = 100.vw
             height = 5.rem
 
-            component {
-                fontSize = 12
-                width = 5.rem
-                height = 5.rem
-                margin = Sides(1.rem, 0.px, 1.rem, 0.px)
-
-                backgroundColor = Color(60, 60, 60, 255)
-                borderRadius = Radius(10.px)
+            (+categoryButton).modify {
+                onClick {
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(ChatComponentText("clicked category 1"))
+                }
             }
-            component {
-                fontSize = 12
-                width = 5.rem
-                height = 5.rem
-                margin = Sides(1.rem, 0.px, 1.rem, 0.px)
-
-                backgroundColor = Color(60, 60, 60, 255)
-                borderRadius = Radius(10.px)
+            (+categoryButton).modify {
+                onClick {
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(ChatComponentText("clicked category 2"))
+                }
             }
-            component {
-                fontSize = 12
-                width = 5.rem
-                height = 5.rem
-                margin = Sides(1.rem, 0.px, 1.rem, 0.px)
-
-                backgroundColor = Color(60, 60, 60, 255)
-                borderRadius = Radius(10.px)
+            (+categoryButton).modify {
+                onClick {
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(ChatComponentText("clicked category 3"))
+                }
             }
         }
     }
@@ -91,7 +92,11 @@ class ConfigGui: GuiScreen() {
         mouseY: Int,
         mouseButton: Int
     ) {
-
+        mainScreen.click(
+            mouseX,
+            mouseY,
+            mouseButton
+        )
     }
 
     override fun mouseReleased(
