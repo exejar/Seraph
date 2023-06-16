@@ -23,7 +23,7 @@ runtime.isTransitive = false
 
 dependencies {
     runtime("com.github.exejar:HyKo:9c840f932e")
-    runtime("com.github.exejar:Kolour:e5a4dc8bb6")
+    runtime("com.github.exejar:Kolour:88ac28aa72")
     runtime("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     compileOnly("com.github.weave-mc:weave-loader:70bd82faa6")
