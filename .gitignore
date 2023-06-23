@@ -3,6 +3,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+src/main/kotlin/club/maxstats/seraph/util/Keys.kt
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

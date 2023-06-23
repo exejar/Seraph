@@ -74,4 +74,4 @@ fun getStatRatio(num1: Number, num2: Number) : Double {
 fun getPlayerData(uuid: UUID): Player? {
     return playerCache.get(uuid)
 }
-var hypixelApiKey : String = ""
+var hypixelApiKey : String = API_KEY // Development Key, Replace with your key if you wish to use Seraph pre-production
