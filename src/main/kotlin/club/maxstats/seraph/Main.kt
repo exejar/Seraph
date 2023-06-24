@@ -2,8 +2,9 @@ package club.maxstats.seraph
 
 import club.maxstats.kolour.render.FontManager
 import club.maxstats.kolour.render.blurProgram
-import club.maxstats.seraph.config.ConfigGui
+import club.maxstats.seraph.gui.ConfigGui
 import club.maxstats.seraph.event.ResizeWindowEvent
+import club.maxstats.seraph.gui.SeraphGui
 import club.maxstats.seraph.render.AlertRender
 import club.maxstats.seraph.stats.StatCacheProvider
 import club.maxstats.seraph.util.*
@@ -16,6 +17,7 @@ import org.lwjgl.input.Keyboard
 
 lateinit var fontManager: FontManager
 lateinit var configGui: ConfigGui
+lateinit var seraphGui: SeraphGui
 
 class Main : ModInitializer {
 
@@ -26,7 +28,8 @@ class Main : ModInitializer {
     @SubscribeEvent
     fun init(event: StartGameEvent.Post) {
         fontManager = FontManager()
-        configGui = ConfigGui()
+//        configGui = ConfigGui()
+        seraphGui = SeraphGui()
         EventBus.subscribe(ApiKey())
         EventBus.subscribe(AlertRender())
         EventBus.subscribe(StatCacheProvider())
@@ -34,7 +37,7 @@ class Main : ModInitializer {
             blurProgram.blurBuffer.createBindFramebuffer(mc.displayWidth, mc.displayHeight)
         }
         EventBus.subscribe(KeyboardEvent::class.java) {
-            e -> if (e.keyCode == Keyboard.KEY_LEFT) mc.displayGuiScreen(configGui)
+            e -> if (e.keyCode == Keyboard.KEY_LEFT) mc.displayGuiScreen(seraphGui)
         }
     }
 }

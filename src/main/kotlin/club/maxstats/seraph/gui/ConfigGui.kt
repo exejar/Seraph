@@ -1,4 +1,4 @@
-package club.maxstats.seraph.config
+package club.maxstats.seraph.gui
 
 import club.maxstats.kolour.gui.*
 import club.maxstats.kolour.render.FontStyle
@@ -7,7 +7,7 @@ import club.maxstats.seraph.render.renderPlayerModel
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
 
-val configCategory = component {
+private val configCategory = component {
     style {
         position = Position.RELATIVE
         alignItems = ItemAlignment.MIDDLE
@@ -22,7 +22,7 @@ val configCategory = component {
     }
 }
 
-val mainScreen = gui {
+private val mainScreen = gui {
     id = "main-screen"
 
     style {
