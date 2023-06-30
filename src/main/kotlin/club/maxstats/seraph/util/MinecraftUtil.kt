@@ -12,6 +12,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.experimental.or
 
 /**
  * Creates a Minecraft GameProfile using a player's username
@@ -60,10 +61,18 @@ fun GameProfile.createEntity(): EntityOtherPlayerMP {
         (playerInfoMap.get(mc.netHandler) as HashMap<UUID, NetworkPlayerInfo>)[this.id] = NetworkPlayerInfo(this)
     }
 
-    return EntityOtherPlayerMP(
+    val entityPlayer = EntityOtherPlayerMP(
         mc.theWorld,
         this
     )
+
+    // Set the all skin layers to true, to force render all layers
+    val dataWatcher = entityPlayer.dataWatcher
+    val currentValue = dataWatcher.getWatchableObjectByte(10)
+    val newValue = currentValue or 0xFF.toByte()
+    dataWatcher.updateObject(10, newValue)
+
+    return entityPlayer
 }
 
 @Serializable

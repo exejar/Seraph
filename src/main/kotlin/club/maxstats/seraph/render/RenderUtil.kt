@@ -3,6 +3,7 @@ package club.maxstats.seraph.render
 import club.maxstats.seraph.util.mc
 import net.minecraft.client.Minecraft
 import net.minecraft.client.entity.AbstractClientPlayer
+import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.RenderHelper
@@ -92,19 +93,35 @@ class SimplePlayerRender(
     renderManager,
     slim
 ) {
-    override fun renderLayers(
-        p0: AbstractClientPlayer?,
-        p1: Float,
-        p2: Float,
-        p3: Float,
-        p4: Float,
-        p5: Float,
-        p6: Float,
-        p7: Float
-    ) {
-        // don't render layers
-    }
     override fun renderName(p0: AbstractClientPlayer?, p1: Double, p2: Double, p3: Double) {
         // don't render name
+    }
+
+    override fun doRender(entity: AbstractClientPlayer, x: Double, y: Double, z: Double, entityYaw: Float, partialTicks: Float) {
+        if (!entity.isUser || renderManager.livingPlayer == entity) {
+            var newY = y
+
+            if (entity.isSneaking && entity !is EntityPlayerSP)
+                newY = y - 0.125
+
+            setAllVisible(entity)
+            super.doRender(entity, x, newY, z, entityYaw, partialTicks)
+        }
+    }
+
+    private fun setAllVisible(clientPlayer: AbstractClientPlayer) {
+        val modelPlayer = getMainModel()
+
+        modelPlayer.setInvisible(true)
+        modelPlayer.bipedHeadwear.showModel = true
+        modelPlayer.bipedBodyWear.showModel = true
+        modelPlayer.bipedLeftLegwear.showModel = true
+        modelPlayer.bipedRightLegwear.showModel = true
+        modelPlayer.bipedLeftArmwear.showModel = true
+        modelPlayer.bipedRightArmwear.showModel = true
+        modelPlayer.heldItemLeft = 0
+        modelPlayer.heldItemRight = 0
+        modelPlayer.aimedBow = false
+        modelPlayer.isSneak = clientPlayer.isSneaking
     }
 }

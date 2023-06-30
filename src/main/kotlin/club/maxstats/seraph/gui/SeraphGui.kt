@@ -8,7 +8,6 @@ import club.maxstats.seraph.util.createGameProfile
 import club.maxstats.seraph.util.mc
 import net.minecraft.client.entity.EntityOtherPlayerMP
 import net.minecraft.client.gui.GuiScreen
-import net.minecraft.entity.player.EntityPlayer
 
 private val statLookup = component {
     id = "stat-lookup"
@@ -119,7 +118,7 @@ private val playerLookup = component {
             paragraph {
                 id = "stat-lookup-input"
                 style {
-                    text = "exejar"
+                    text = "Terrible"
                 }
             }
         }
